@@ -1,11 +1,6 @@
-🎮 HOLIC SPACER v0.2 — FITUR BARU LENGKAP
+✅ HOLIC SPACER v0.2 — FINAL VERSION (PVP FIXED)
 
-Berikut file lengkap dengan 4 FITUR BARU BESAR:
-
-1. 🏆 ACHIEVEMENT SYSTEM — 15 pencapaian tersimpan
-2. 📊 LOCAL LEADERBOARD — Top 10 skor dengan nama
-3. ⚙️ SETTINGS MENU — Volume, efek, auto-fire, reset save
-4. 🔥 BOSS RUSH MODE — Lawan 100 boss beruntun tanpa NPC
+File lengkap siap pakai. P1 di atas, P2 di bawah sudah terintegrasi. Semua fitur sebelumnya tetap ada.
 
 ```html
 <!DOCTYPE html>
@@ -132,12 +127,8 @@ function persistSave(){ try { localStorage.setItem(SAVE_KEY, JSON.stringify(save
 /* SETTINGS */
 const SETTINGS_KEY = 'holic_spacer_settings_v1';
 const settings = {
-  sfxVolume: 0.7,
-  screenShake: true,
-  bloodEffects: true,
-  slowMotion: true,
-  autoFire: true,
-  showFps: false
+  sfxVolume: 0.7, screenShake: true, bloodEffects: true,
+  slowMotion: true, autoFire: true, showFps: false
 };
 try { const raw = localStorage.getItem(SETTINGS_KEY); if (raw) Object.assign(settings, JSON.parse(raw)); } catch(e){}
 function persistSettings(){ try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch(e){} }
@@ -153,17 +144,17 @@ const ACHIEVEMENTS = [
   { id:'boss_10', name:'PENANTANG', desc:'Kalahkan 10 boss', icon:'🔥', check:(s,run)=>run.bossesKilled>=10 },
   { id:'boss_50', name:'LEGENDA', desc:'Kalahkan 50 boss', icon:'⭐', check:(s,run)=>run.bossesKilled>=50 },
   { id:'boss_100', name:'MASTER', desc:'Kalahkan 100 boss', icon:'🏆', check:(s,run)=>run.bossesKilled>=100 },
-  { id:'level_50', name:'PENDUDUK LEVEL 50', desc:'Capai level 50', icon:'📈', check:(s,run)=>run.level>=50 },
-  { id:'level_100', name:'VETERAN LEVEL 100', desc:'Capai level 100', icon:'🎯', check:(s,run)=>run.level>=100 },
+  { id:'level_50', name:'PENDUDUK LV50', desc:'Capai level 50', icon:'📈', check:(s,run)=>run.level>=50 },
+  { id:'level_100', name:'VETERAN LV100', desc:'Capai level 100', icon:'🎯', check:(s,run)=>run.level>=100 },
   { id:'combo_20', name:'KOMBO MASTER', desc:'Kombo 20x', icon:'💥', check:(s,run)=>run.bestCombo>=20 },
-  { id:'ulti_user', name:'PENGGUNA ULTI', desc:'Pakai ULT 1 kali', icon:'⚡', check:(s,run)=>run.ultisUsed>=1 },
+  { id:'ulti_user', name:'PENGGUNA ULTI', desc:'Pakai ULTI 1 kali', icon:'⚡', check:(s,run)=>run.ultisUsed>=1 },
   { id:'beam_user', name:'PENGGUNA BEAM', desc:'Pakai BEAM 1 kali', icon:'🔱', check:(s,run)=>run.beamsUsed>=1 },
   { id:'pvp_win', name:'GLADIATOR', desc:'Menang 1 PVP', icon:'⚔️', check:(s)=>s.pvpWins>=1 },
-  { id:'bossrush_10', name:'BOSS RUSH 10', desc:'Kalahkan 10 boss di Boss Rush', icon:'🥇', check:(s)=>s.bossRushBest>=10 },
-  { id:'bossrush_25', name:'BOSS RUSH 25', desc:'Kalahkan 25 boss di Boss Rush', icon:'🥈', check:(s)=>s.bossRushBest>=25 },
-  { id:'bossrush_50', name:'BOSS RUSH 50', desc:'Kalahkan 50 boss di Boss Rush', icon:'🥉', check:(s)=>s.bossRushBest>=50 },
-  { id:'no_death_10', name:'TANPA CELA', desc:'Capai level 10 tanpa mati', icon:'🛡️', check:(s,run)=>run.level>=10 && run.deaths===0 },
-  { id:'no_death_25', name:'KEBAL', desc:'Capai level 25 tanpa mati', icon:'✨', check:(s,run)=>run.level>=25 && run.deaths===0 },
+  { id:'bossrush_10', name:'BOSS RUSH 10', desc:'10 boss di Boss Rush', icon:'🥇', check:(s)=>s.bossRushBest>=10 },
+  { id:'bossrush_25', name:'BOSS RUSH 25', desc:'25 boss di Boss Rush', icon:'🥈', check:(s)=>s.bossRushBest>=25 },
+  { id:'bossrush_50', name:'BOSS RUSH 50', desc:'50 boss di Boss Rush', icon:'🥉', check:(s)=>s.bossRushBest>=50 },
+  { id:'no_death_10', name:'TANPA CELA', desc:'Level 10 tanpa mati', icon:'🛡️', check:(s,run)=>run.level>=10 && run.deaths===0 },
+  { id:'no_death_25', name:'KEBAL', desc:'Level 25 tanpa mati', icon:'✨', check:(s,run)=>run.level>=25 && run.deaths===0 },
 ];
 
 /* SHIPS */
@@ -212,8 +203,7 @@ const G = {
   runDeaths: 0, runUltisUsed: 0, runBeamsUsed: 0, runBestCombo: 0,
   fps: 60, fpsCounter: 0, fpsTimer: 0,
   settingsScroll: 0, achScroll: 0, lbScroll: 0,
-  bossRushIdx: 0, bossRushTime: 0,
-  pendingRunEnd: false
+  bossRushIdx: 0, bossRushTime: 0
 };
 
 const buffs = { rapidFire:0, shield:0, magnet:0, weapon:'VULCAN', weaponTimer:0 };
@@ -225,7 +215,8 @@ const P = {
   invuln:0, hitFlash:0,
   ultiCharge:0, ultiRate:1, ultiPower:1, ultiActive:0,
   ulti2Charge:0, ulti2Rate:1, ulti2Power:1, ulti2Active:0,
-  ulti2Beam:null, pierce:0, dead:false, respawnTimer:0
+  ulti2Beam:null, pierce:0, dead:false, respawnTimer:0,
+  faceDir: -1
 };
 
 let R = null;
@@ -289,7 +280,7 @@ function getRank(kills){
   return { name:'ROOKIE', color:'#9bb3c9' };
 }
 
-/* ============ ACHIEVEMENTS ============ */
+/* ACHIEVEMENTS */
 function checkAchievements(run){
   let unlocked = 0;
   for (const ach of ACHIEVEMENTS){
@@ -307,26 +298,21 @@ function checkAchievements(run){
   if (unlocked > 0) persistSave();
   return unlocked;
 }
-function getUnlockedCount(){
-  return Object.keys(saveData.achievements).length;
-}
+function getUnlockedCount(){ return Object.keys(saveData.achievements).length; }
 
-/* ============ LEADERBOARD ============ */
+/* LEADERBOARD */
 function addToLeaderboard(entry){
   saveData.leaderboard.push({
     name: saveData.playerName || 'PLAYER',
-    score: entry.score,
-    level: entry.level,
-    bosses: entry.bosses,
-    mode: entry.mode || 'classic',
-    date: Date.now()
+    score: entry.score, level: entry.level, bosses: entry.bosses,
+    mode: entry.mode || 'classic', date: Date.now()
   });
   saveData.leaderboard.sort((a,b) => b.score - a.score);
   if (saveData.leaderboard.length > 10) saveData.leaderboard.length = 10;
   persistSave();
 }
 
-/* ============ GEOMETRY ============ */
+/* GEOMETRY */
 function getUltiButtonPos(){
   const r = Math.max(38, Math.min(52, Math.min(W,H)*0.075));
   return { x: W-r-22, y: H-r-22, r };
@@ -389,12 +375,12 @@ function getMenuButtonRects(){
   const totalH = 6 * bh + 5 * gap;
   const startY = H/2 - totalH/2 + 60;
   return [
-    { x:cx-bw/2, y:startY,           w:bw, h:bh, label:'SINGLE PLAYER', color:'#06d6a0' },
-    { x:cx-bw/2, y:startY+ (bh+gap), w:bw, h:bh, label:'MULTIPLAYER (ONLINE)', color:'#f72585' },
-    { x:cx-bw/2, y:startY+(bh+gap)*2,w:bw, h:bh, label:'🔥 BOSS RUSH', color:'#ff9f1c' },
-    { x:cx-bw/2, y:startY+(bh+gap)*3,w:bw, h:bh, label:'🏆 ACHIEVEMENTS', color:'#ffd166' },
-    { x:cx-bw/2, y:startY+(bh+gap)*4,w:bw, h:bh, label:'📊 LEADERBOARD', color:'#7bdff2' },
-    { x:cx-bw/2, y:startY+(bh+gap)*5,w:bw, h:bh, label:'⚙️ SETTINGS', color:'#c77dff' }
+    { x:cx-bw/2, y:startY, w:bw, h:bh, label:'SINGLE PLAYER' },
+    { x:cx-bw/2, y:startY+ (bh+gap), w:bw, h:bh, label:'MULTIPLAYER (ONLINE)' },
+    { x:cx-bw/2, y:startY+(bh+gap)*2,w:bw, h:bh, label:'🔥 BOSS RUSH' },
+    { x:cx-bw/2, y:startY+(bh+gap)*3,w:bw, h:bh, label:'🏆 ACHIEVEMENTS' },
+    { x:cx-bw/2, y:startY+(bh+gap)*4,w:bw, h:bh, label:'📊 LEADERBOARD' },
+    { x:cx-bw/2, y:startY+(bh+gap)*5,w:bw, h:bh, label:'⚙️ SETTINGS' }
   ];
 }
 function getPauseButtonRects(){
@@ -408,8 +394,23 @@ function getPauseButtonRects(){
 function getBackButtonRect(){
   return { x: W/2-100, y: H-70, w: 200, h: 46, label:'KEMBALI', color:'#9bb3c9' };
 }
+function getSettingsToggleRects(){
+  const cx = W/2, bw = Math.min(360, W-60);
+  const bh = 44, gap = 8;
+  const startY = H/2 - 145;
+  return [
+    { x:cx-bw/2, y:startY, w:bw, h:bh, label:'Nama Pemain', id:'name' },
+    { x:cx-bw/2, y:startY+(bh+gap), w:bw, h:bh, label:'SFX Volume', id:'sfxVolume' },
+    { x:cx-bw/2, y:startY+(bh+gap)*2, w:bw, h:bh, label:'Screen Shake', id:'screenShake' },
+    { x:cx-bw/2, y:startY+(bh+gap)*3, w:bw, h:bh, label:'Efek Darah', id:'bloodEffects' },
+    { x:cx-bw/2, y:startY+(bh+gap)*4, w:bw, h:bh, label:'Slow Motion', id:'slowMotion' },
+    { x:cx-bw/2, y:startY+(bh+gap)*5, w:bw, h:bh, label:'Auto Fire', id:'autoFire' },
+    { x:cx-bw/2, y:startY+(bh+gap)*6, w:bw, h:bh, label:'Show FPS', id:'showFps' },
+    { x:cx-bw/2, y:startY+(bh+gap)*7, w:bw, h:bh, label:'⚠️ RESET SAVE', id:'reset', danger:true }
+  ];
+}
 
-/* ============ INPUT ============ */
+/* INPUT */
 const keys = Object.create(null);
 let dragging = false, dragOffX=0, dragOffY=0, targetX=0, targetY=0;
 
@@ -507,18 +508,16 @@ cv.addEventListener('pointerdown', e => {
       sfx(620,0.08,'sine',0.04);
       return;
     }
-    /* Settings toggles */
     if (G.state === 'settings'){
       const toggles = getSettingsToggleRects();
       for (let i=0;i<toggles.length;i++){
         const t = toggles[i];
         if (p.x>=t.x && p.x<=t.x+t.w && p.y>=t.y && p.y<=t.y+t.h){
           if (t.id === 'reset'){
-            if (confirm('Reset semua progress? Ini akan menghapus best score, achievement, dan leaderboard.')){
+            if (confirm('Reset semua progress?')){
               Object.keys(saveData).forEach(k=>delete saveData[k]);
-              saveData.best = 0; saveData.bestLevel = 1;
-              saveData.totalKills = 0; saveData.pvpWins = 0;
-              saveData.achievements = {}; saveData.leaderboard = [];
+              saveData.best = 0; saveData.bestLevel = 1; saveData.totalKills = 0;
+              saveData.pvpWins = 0; saveData.achievements = {}; saveData.leaderboard = [];
               saveData.bossRushBest = 0; saveData.bossRushTimeBest = 0;
               saveData.playerName = 'PLAYER'; saveData.totalDeaths = 0;
               saveData.totalRuns = 0; saveData.totalPlayTime = 0;
@@ -528,15 +527,9 @@ cv.addEventListener('pointerdown', e => {
           } else if (t.id === 'sfxVolume'){
             settings.sfxVolume = (settings.sfxVolume + 0.25) % 1.25;
             if (settings.sfxVolume > 1) settings.sfxVolume = 0;
-            persistSettings();
-            sfx(880, 0.1, 'sine', 0.06);
-          } else if (t.id === 'name'){
-            openNameInput();
-          } else {
-            settings[t.id] = !settings[t.id];
-            persistSettings();
-            sfx(660, 0.08, 'sine', 0.04);
-          }
+            persistSettings(); sfx(880, 0.1, 'sine', 0.06);
+          } else if (t.id === 'name'){ openNameInput(); }
+          else { settings[t.id] = !settings[t.id]; persistSettings(); sfx(660, 0.08, 'sine', 0.04); }
           return;
         }
       }
@@ -566,9 +559,7 @@ cv.addEventListener('pointerdown', e => {
   }
   if (G.state === 'mpHostWait'){
     const btn = { x:W/2-100, y:H-120, w:200, h:52 };
-    if (p.x>=btn.x && p.x<=btn.x+btn.w && p.y>=btn.y && p.y<=btn.y+btn.h){
-      cancelMultiplayer();
-    }
+    if (p.x>=btn.x && p.x<=btn.x+btn.w && p.y>=btn.y && p.y<=btn.y+btn.h) cancelMultiplayer();
     return;
   }
   if (G.state === 'select'){
@@ -601,10 +592,7 @@ cv.addEventListener('pointerdown', e => {
 
   if (G.state === 'playing'){
     const ab = getAttackButtonPos();
-    if (dist2(p.x, p.y, ab.x, ab.y) < (ab.r * 1.12) * (ab.r * 1.12)){
-      attackHeld = true;
-      return;
-    }
+    if (dist2(p.x, p.y, ab.x, ab.y) < (ab.r * 1.12) * (ab.r * 1.12)){ attackHeld = true; return; }
     const ub2 = getUlti2ButtonPos();
     if (dist2(p.x, p.y, ub2.x, ub2.y) < (ub2.r*1.18)*(ub2.r*1.18)){
       if (isOnline && !isHost) net.pendingUlti2 = true;
@@ -630,32 +618,12 @@ cv.addEventListener('pointermove', e => {
   targetX = p.x + dragOffX;
   targetY = p.y + dragOffY;
 });
-const stopDrag = () => {
-  dragging = false;
-  attackHeld = false;
-};
+const stopDrag = () => { dragging = false; attackHeld = false; };
 cv.addEventListener('pointerup', stopDrag);
 cv.addEventListener('pointercancel', stopDrag);
 cv.addEventListener('contextmenu', e => e.preventDefault());
 
-/* Settings toggle rects */
-function getSettingsToggleRects(){
-  const cx = W/2, bw = Math.min(360, W-60);
-  const bh = 48, gap = 10;
-  const startY = H/2 - 130;
-  return [
-    { x:cx-bw/2, y:startY,              w:bw, h:bh, label:'Nama Pemain', id:'name' },
-    { x:cx-bw/2, y:startY+(bh+gap),     w:bw, h:bh, label:'SFX Volume', id:'sfxVolume' },
-    { x:cx-bw/2, y:startY+(bh+gap)*2,   w:bw, h:bh, label:'Screen Shake', id:'screenShake' },
-    { x:cx-bw/2, y:startY+(bh+gap)*3,   w:bw, h:bh, label:'Efek Darah', id:'bloodEffects' },
-    { x:cx-bw/2, y:startY+(bh+gap)*4,   w:bw, h:bh, label:'Slow Motion', id:'slowMotion' },
-    { x:cx-bw/2, y:startY+(bh+gap)*5,   w:bw, h:bh, label:'Auto Fire', id:'autoFire' },
-    { x:cx-bw/2, y:startY+(bh+gap)*6,   w:bw, h:bh, label:'Show FPS', id:'showFps' },
-    { x:cx-bw/2, y:startY+(bh+gap)*7,   w:bw, h:bh, label:'⚠️ RESET SAVE', id:'reset', danger:true }
-  ];
-}
-
-/* Name overlay */
+/* NAME OVERLAY */
 function openNameInput(){
   nameOverlay.style.display = 'flex';
   playerNameInput.value = saveData.playerName || '';
@@ -695,15 +663,11 @@ function createRoom(){
   peer.on('connection', c => { conn = c; setupConnection(); });
 }
 function openJoinOverlay(){
-  joinError.textContent = '';
-  roomCodeInput.value = '';
+  joinError.textContent = ''; roomCodeInput.value = '';
   joinOverlay.style.display = 'flex';
   setTimeout(() => roomCodeInput.focus(), 100);
 }
-function closeJoinOverlay(){
-  joinOverlay.style.display = 'none';
-  roomCodeInput.blur();
-}
+function closeJoinOverlay(){ joinOverlay.style.display = 'none'; roomCodeInput.blur(); }
 joinOkBtn.addEventListener('click', () => {
   const code = (roomCodeInput.value || '').toUpperCase().trim();
   if (code.length !== 5){ joinError.textContent = 'Kode harus 5 karakter'; return; }
@@ -811,7 +775,8 @@ function createRemotePlayer(shipIdx){
     invuln: 2, hitFlash: 0,
     ultiCharge: 0, ultiRate: ship.ultiRate, ultiPower: ship.ultiPower, ultiActive: 0,
     ulti2Charge: 0, ulti2Rate: ship.ultiRate, ulti2Power: ship.ultiPower, ulti2Active: 0, ulti2Beam: null,
-    pierce: 0, dead: false, respawnTimer: 0, shipIdx
+    pierce: 0, dead: false, respawnTimer: 0, shipIdx,
+    faceDir: -1
   };
 }
 function hostSendSnapshot(){
@@ -821,12 +786,14 @@ function hostSendSnapshot(){
     p1: { x:Math.round(P.x), y:Math.round(P.y), hp:Math.round(P.hp), maxHp:P.maxHp,
           dead: P.dead?1:0, invuln:+P.invuln.toFixed(2), shipIdx: G.selectedShip,
           ultiCharge:+P.ultiCharge.toFixed(2), ultiActive:+P.ultiActive.toFixed(2), r:P.r,
+          faceDir: P.faceDir,
           ulti2Charge:+P.ulti2Charge.toFixed(2), ulti2Active:+P.ulti2Active.toFixed(2),
           beam: P.ulti2Beam ? { x:Math.round(P.ulti2Beam.x), w:Math.round(P.ulti2Beam.w),
             life:+P.ulti2Beam.life.toFixed(2), maxLife:+P.ulti2Beam.maxLife.toFixed(2) } : null },
     p2: { x:Math.round(R.x), y:Math.round(R.y), hp:Math.round(R.hp), maxHp:R.maxHp,
           dead: R.dead?1:0, invuln:+R.invuln.toFixed(2), shipIdx: remoteShip,
           ultiCharge:+R.ultiCharge.toFixed(2), ultiActive:+R.ultiActive.toFixed(2),
+          faceDir: R.faceDir,
           ulti2Charge:+R.ulti2Charge.toFixed(2), ulti2Active:+R.ulti2Active.toFixed(2),
           beam: R.ulti2Beam ? { x:Math.round(R.ulti2Beam.x), w:Math.round(R.ulti2Beam.w),
             life:+R.ulti2Beam.life.toFixed(2), maxLife:+R.ulti2Beam.maxLife.toFixed(2) } : null,
@@ -853,12 +820,14 @@ function applySnapshot(snap){
   P.ultiCharge = mySnap.ultiCharge; P.ultiActive = mySnap.ultiActive;
   P.ulti2Charge = mySnap.ulti2Charge || 0; P.ulti2Active = mySnap.ulti2Active || 0;
   P.r = mySnap.r; if (mySnap.speed) P.speed = mySnap.speed;
+  if (mySnap.faceDir !== undefined) P.faceDir = mySnap.faceDir;
 
   if (R){
     R.x = snap.p1.x; R.y = snap.p1.y;
     R.hp = snap.p1.hp; R.maxHp = snap.p1.maxHp;
     R.dead = !!snap.p1.dead; R.invuln = snap.p1.invuln;
     R.ultiActive = snap.p1.ultiActive; R.shipIdx = snap.p1.shipIdx;
+    if (snap.p1.faceDir !== undefined) R.faceDir = snap.p1.faceDir;
     R.ulti2Active = snap.p1.ulti2Active || 0;
     R.ulti2Charge = snap.p1.ulti2Charge || 0;
     R.ulti2Beam = snap.p1.beam ? { ...snap.p1.beam } : null;
@@ -912,17 +881,14 @@ function confirmShip(){
   }
 }
 
-/* ============ BOSS RUSH ============ */
+/* BOSS RUSH */
 function startBossRush(){
-  isOnline = false;
-  G.gameMode = 'bossrush';
-  G.selectedShip = 0;
-  startGame();
+  isOnline = false; G.gameMode = 'bossrush';
+  G.selectedShip = 0; startGame();
 }
 function spawnBossRushBoss(){
   const idx = G.bossRushIdx + 1;
   if (idx > 100){
-    /* Win! */
     if (G.score > saveData.bossRushBest){
       saveData.bossRushBest = G.score;
       addToLeaderboard({ score:G.score, level:G.bossRushIdx, bosses:G.bossRushIdx, mode:'bossrush' });
@@ -939,14 +905,14 @@ function spawnBossRushBoss(){
   }
   G.bossRushIdx = idx;
   boss = createBoss(idx);
-  boss.maxHp = Math.floor(boss.maxHp * 0.7); /* sedikit lebih mudah */
+  boss.maxHp = Math.floor(boss.maxHp * 0.7);
   boss.hp = boss.maxHp;
   G.bossWarning = 2.5;
   showMsg('BOSS ' + idx + ' / 100', 2.0);
   sfx(300, 0.3, 'sawtooth', 0.08);
 }
 
-/* ============ START ============ */
+/* START */
 function startGame(){
   G.state = 'playing';
   G.score = 0; G.bossesKilled = 0; G.time = 0;
@@ -967,15 +933,24 @@ function startGame(){
   P.fireRate = ship.fireRate; P.dmg = ship.dmg; P.streams = ship.streams;
   P.ultiRate = ship.ultiRate; P.ultiPower = ship.ultiPower;
   P.ulti2Rate = ship.ultiRate * 0.75; P.ulti2Power = ship.ultiPower;
-  P.x = W/2; P.y = H - 120;
   P.cd = 0; P.invuln = 2; P.hitFlash = 0;
   P.ultiCharge = 0; P.ultiActive = 0; P.pierce = 0;
   P.ulti2Charge = 0; P.ulti2Active = 0; P.ulti2Beam = null;
   P.dead = false; P.respawnTimer = 0;
 
-  if (isOnline && isHost && R){
+  /* PVP POSITIONING: P1 (host) AT TOP, P2 (guest) AT BOTTOM */
+  if (G.gameMode === 'pvp' && isOnline){
+    if (isHost){
+      P.x = W/2; P.y = 160; P.faceDir = 1;
+    } else {
+      P.x = W/2; P.y = H - 160; P.faceDir = -1;
+    }
+  } else {
+    P.x = W/2; P.y = H - 120; P.faceDir = -1;
+  }
+
+  if (isOnline && R){
     const rs = SHIPS[remoteShip];
-    R.x = W/2 - 100; R.y = H - 160;
     R.r = rs.r; R.speed = rs.speed;
     R.maxHp = R.hp = rs.hp;
     R.fireRate = rs.fireRate; R.dmg = rs.dmg; R.streams = rs.streams;
@@ -983,6 +958,18 @@ function startGame(){
     R.ulti2Rate = rs.ultiRate * 0.75; R.ulti2Power = rs.ultiPower;
     R.invuln = 2; R.dead = false; R.ultiCharge = 0; R.pierce = 0; R.cd = 0;
     R.ulti2Charge = 0; R.ulti2Active = 0; R.ulti2Beam = null;
+
+    if (G.gameMode === 'pvp'){
+      if (isHost){
+        /* R = P2 (guest) at BOTTOM */
+        R.x = W/2; R.y = H - 160; R.faceDir = -1;
+      } else {
+        /* R = P1 (host) at TOP */
+        R.x = W/2; R.y = 160; R.faceDir = 1;
+      }
+    } else {
+      R.x = W/2 - 100; R.y = H - 160; R.faceDir = -1;
+    }
   }
 
   pbullets.length = 0; ebullets.length = 0; enemies.length = 0;
@@ -1025,7 +1012,6 @@ function backToMenu(){
       addToLeaderboard({ score:G.score, level:G.level, bosses:G.bossesKilled, mode:'classic' });
     }
   }
-  /* Check achievements at end of run */
   checkAchievements({ deaths:G.runDeaths, level:G.level, bossesKilled:G.bossesKilled,
                       bestCombo:combo.bestCombo, ultisUsed:G.runUltisUsed, beamsUsed:G.runBeamsUsed });
   persistSave();
@@ -1042,7 +1028,6 @@ function startLevel(n){
   levelState.isBoss = isBoss;
   levelState.toSpawn = 0;
   enemies.length = 0;
-
   if(isBoss){
     const idx = n / BOSS_EVERY;
     boss = createBoss(idx);
@@ -1075,7 +1060,6 @@ function updateLevel(dt){
     return;
   }
   if(levelState.isBoss) return;
-
   if(levelState.toSpawn > 0){
     levelState.spawnTimer -= dt;
     while(levelState.spawnTimer <= 0 && levelState.toSpawn > 0){
@@ -1091,21 +1075,12 @@ function updateLevel(dt){
     sfx(660, 0.15, 'sine', 0.05);
   }
 }
-
 function showUpgrade(){
-  if (isOnline && !isHost){
-    G.state = 'upgradeWait';
-    showMsg('Host memilih upgrade...', 60);
-    return;
-  }
-  G.state = 'upgrade';
-  G.msgT = 0;
+  if (isOnline && !isHost){ G.state = 'upgradeWait'; showMsg('Host memilih upgrade...', 60); return; }
+  G.state = 'upgrade'; G.msgT = 0;
   const pool = UPGRADES.filter(u => !u.maxed || !u.maxed());
-  const picks = [];
-  const copy = pool.slice();
-  for (let i=0;i<3 && copy.length>0;i++){
-    picks.push(copy.splice((Math.random()*copy.length)|0, 1)[0]);
-  }
+  const picks = []; const copy = pool.slice();
+  for (let i=0;i<3 && copy.length>0;i++) picks.push(copy.splice((Math.random()*copy.length)|0, 1)[0]);
   upgradeChoices = picks;
   sfx(520, 0.3, 'sine', 0.06);
 }
@@ -1160,7 +1135,6 @@ function activateUlti(target){
       ['#f72585','#7bdff2','#ffd166','#ffffff'][(Math.random()*4)|0], rnd(1.2, 2.2));
   }
 }
-
 function activateUlti2(target){
   if (G.state !== 'playing') return;
   if (target.ulti2Charge < 1 || target.dead) return;
@@ -1361,6 +1335,7 @@ function addBloodDrip(){
   while (bloodDrips.length > 22) bloodDrips.shift();
 }
 
+/* ENEMIES */
 function nearestPlayer(x, y){
   if (!R) return P;
   if (P.dead && !R.dead) return R;
@@ -1453,9 +1428,7 @@ function killEnemy(index, silent){
   addBloodBurst(e.x, e.y, intensity, { upBias: true });
   addBloodDecal(e.x, e.y, e.r * 1.3, { flat: true, persist: e.type === 'tank' });
   G.killFlash = Math.max(G.killFlash, 0.25);
-  for(let i=0;i<10;i++){
-    addParticle(e.x, e.y, ['#ff6b6b','#ffd166','#ff9f1c'][(Math.random()*3)|0], 0.9);
-  }
+  for(let i=0;i<10;i++) addParticle(e.x, e.y, ['#ff6b6b','#ffd166','#ff9f1c'][(Math.random()*3)|0], 0.9);
   const baseHeal = KILL_HEAL[e.type] || 3;
   const comboBonus = 1 + Math.min(combo.multiplier - 1, 2) * 0.25;
   healPlayer(Math.round(baseHeal * comboBonus), e.x, e.y);
@@ -1468,6 +1441,7 @@ function killEnemy(index, silent){
   enemies.splice(index,1);
 }
 
+/* BOSS */
 const BOSS_PATTERNS = 10;
 function createBoss(idx){
   const hpMult = isOnline ? 1.6 : 1;
@@ -1575,17 +1549,11 @@ function bossAttack(b){
 function bossDefeated(){
   const b = boss;
   if(!b) return;
-  for (let k = 0; k < 6; k++){
-    addBloodBurst(b.x + rnd(-b.r*0.8, b.r*0.8), b.y + rnd(-b.r*0.8, b.r*0.8), 2.5, { upBias: true });
-  }
-  for (let k = 0; k < 5; k++){
-    addBloodDecal(b.x + rnd(-b.r*1.2, b.r*1.2), b.y + rnd(-b.r*0.5, b.r*1.0),
+  for (let k = 0; k < 6; k++) addBloodBurst(b.x + rnd(-b.r*0.8, b.r*0.8), b.y + rnd(-b.r*0.8, b.r*0.8), 2.5, { upBias: true });
+  for (let k = 0; k < 5; k++) addBloodDecal(b.x + rnd(-b.r*1.2, b.r*1.2), b.y + rnd(-b.r*0.5, b.r*1.0),
       b.r * rnd(0.9, 1.6), { flat: true, persist: true, alpha: 0.85 });
-  }
-  for(let i=0;i<90;i++){
-    addParticle(b.x+rnd(-b.r,b.r), b.y+rnd(-b.r,b.r),
+  for(let i=0;i<90;i++) addParticle(b.x+rnd(-b.r,b.r), b.y+rnd(-b.r,b.r),
       ['#ffd166','#ff9f1c','#ff0054','#ffffff'][(Math.random()*4)|0], rnd(1,2.4));
-  }
   G.shake = settings.screenShake ? 1.2 : 0;
   G.flash = 0.5;
   G.screenBlood = Math.max(G.screenBlood, settings.bloodEffects ? 0.7 : 0);
@@ -1602,14 +1570,9 @@ function bossDefeated(){
   sfx(70, 0.7, 'sawtooth', 0.09);
   setTimeout(() => sfx(140,0.5,'square',0.07), 90);
   boss = null;
-
   if (G.gameMode === 'bossrush'){
-    /* Next boss rush */
     setTimeout(() => {
-      if (G.state === 'playing'){
-        healPlayer(30, P.x, P.y);
-        spawnBossRushBoss();
-      }
+      if (G.state === 'playing'){ healPlayer(30, P.x, P.y); spawnBossRushBoss(); }
     }, 800);
   } else {
     levelPhase = 'clear';
@@ -1618,43 +1581,49 @@ function bossDefeated(){
   }
 }
 
+/* BULLETS — with faceDir */
 function fireFromPlayer(p, color){
   const owner = (p === P) ? 'P' : 'R';
   const w = buffs.weapon;
   const rapidMult = buffs.rapidFire > 0 ? 1.7 : 1;
+  const face = p.faceDir || -1;
+  const baseAngle = face > 0 ? Math.PI/2 : -Math.PI/2;
+  const noseY = p.y + face * 14;
+  const baseY = p.y + face * 10;
+
   if (w === 'LASER'){
-    pbullets.push({ x: p.x, y: p.y - 14, vx: 0, vy: -1400,
+    pbullets.push({ x: p.x, y: noseY, vx: 0, vy: face * 1400,
       r: 6, dmg: p.dmg * 3.2, color: '#ff0054',
-      pierce: 3, hitSet: new Set(), laser: true, owner });
+      pierce: 3, hitSet: new Set(), laser: true, owner, face });
   } else if (w === 'SPREAD'){
     const n = 8;
     for (let i = 0; i < n; i++){
-      const a = -Math.PI/2 + (i - (n-1)/2) * 0.16;
-      pbullets.push({ x: p.x, y: p.y - 10,
+      const a = baseAngle + (i - (n-1)/2) * 0.16;
+      pbullets.push({ x: p.x, y: baseY,
         vx: Math.cos(a) * 850, vy: Math.sin(a) * 850,
         r: 4, dmg: p.dmg * 0.6, color: '#ffd166',
-        pierce: 0, hitSet: null, owner });
+        pierce: 0, hitSet: null, owner, face });
     }
   } else if (w === 'HOMING'){
     const n = 2;
     for (let i = 0; i < n; i++){
       const off = i - (n-1)/2;
-      pbullets.push({ x: p.x + off * 12, y: p.y - 10,
-        vx: Math.cos(-Math.PI/2 + off * 0.3) * 400,
-        vy: Math.sin(-Math.PI/2 + off * 0.3) * 400,
+      pbullets.push({ x: p.x + off * 12, y: baseY,
+        vx: Math.cos(baseAngle + off * 0.3) * 400,
+        vy: Math.sin(baseAngle + off * 0.3) * 400,
         r: 5, dmg: p.dmg * 1.8, color: '#06d6a0',
-        pierce: 0, hitSet: null, homing: 4.5, owner });
+        pierce: 0, hitSet: null, homing: 4.5, owner, face });
     }
   } else {
     const n = p.streams;
     const spread = 0.075;
     for(let i=0;i<n;i++){
       const off = i - (n-1)/2;
-      const ang = -Math.PI/2 + off*spread;
-      pbullets.push({ x: p.x + off*9, y: p.y - 14,
+      const ang = baseAngle + off*spread;
+      pbullets.push({ x: p.x + off*9, y: noseY,
         vx: Math.cos(ang)*950*rapidMult, vy: Math.sin(ang)*950*rapidMult,
         r:4, dmg:p.dmg, color: color || '#7bdff2',
-        pierce: p.pierce, hitSet: p.pierce>0 ? new Set() : null, owner });
+        pierce: p.pierce, hitSet: p.pierce>0 ? new Set() : null, owner, face });
     }
   }
 }
@@ -1691,7 +1660,7 @@ function updateBullets(dt){
       }
     }
     b.x += b.vx*dt; b.y += b.vy*dt;
-    if(b.y<-30 || b.x<-40 || b.x>W+40) pbullets.splice(i,1);
+    if(b.y<-30 || b.y>H+30 || b.x<-40 || b.x>W+40) pbullets.splice(i,1);
   }
   for(let i=ebullets.length-1;i>=0;i--){
     const b = ebullets[i];
@@ -1717,6 +1686,8 @@ function updateBullets(dt){
     if(b.life<=0 || b.y>H+60 || b.y<-120 || b.x<-80 || b.x>W+80) ebullets.splice(i,1);
   }
 }
+
+/* PARTICLES */
 function addParticle(x,y,color,size){
   if(particles.length > 700) return;
   const a = Math.random()*TAU, s = rnd(40,260);
@@ -1756,6 +1727,7 @@ function updateFloatingTexts(dt){
   }
 }
 
+/* COLLISIONS */
 function collisions(){
   for(let i=pbullets.length-1;i>=0;i--){
     const b = pbullets[i];
@@ -1909,6 +1881,7 @@ function checkPvpEnd(){
   }
 }
 
+/* UPDATE PLAYER */
 function updatePlayer(p, dt, isLocal){
   if (p.dead) {
     if (G.gameMode !== 'pvp' && G.gameMode !== 'bossrush'){
@@ -1916,6 +1889,7 @@ function updatePlayer(p, dt, isLocal){
       if (p.respawnTimer <= 0){
         p.dead = false; p.hp = p.maxHp * 0.5; p.invuln = 2;
         p.x = W/2 + (p === R ? -80 : 80); p.y = H - 120;
+        p.faceDir = -1;
       }
     }
     return;
@@ -1998,13 +1972,9 @@ function update(dt){
     G.slowMo = Math.max(0, G.slowMo - dt * 1.5);
   } else if (G.slowMo > 0) { G.slowMo = 0; }
 
-  /* FPS counter */
   G.fpsCounter++;
   G.fpsTimer += dt;
-  if (G.fpsTimer >= 0.5){
-    G.fps = Math.round(G.fpsCounter / G.fpsTimer);
-    G.fpsCounter = 0; G.fpsTimer = 0;
-  }
+  if (G.fpsTimer >= 0.5){ G.fps = Math.round(G.fpsCounter / G.fpsTimer); G.fpsCounter = 0; G.fpsTimer = 0; }
 
   G.time += realDt;
   if(G.shake > 0) G.shake = Math.max(0, G.shake - realDt*2.6);
@@ -2014,7 +1984,6 @@ function update(dt){
   if(G.killFlash > 0) G.killFlash = Math.max(0, G.killFlash - realDt*3.5);
   if(G.healFlash > 0) G.healFlash = Math.max(0, G.healFlash - realDt*2.5);
   if(G.bossWarning > 0) G.bossWarning = Math.max(0, G.bossWarning - realDt);
-
   if (buffs.rapidFire > 0) buffs.rapidFire -= realDt;
   if (buffs.magnet > 0) buffs.magnet -= realDt;
   if (buffs.weaponTimer > 0){
@@ -2034,9 +2003,7 @@ function update(dt){
   if(G.state !== 'playing') return;
 
   if (G.gameMode === 'bossrush') G.bossRushTime += realDt;
-
   if (isOnline && !isHost){ updateGuest(realDt); return; }
-
   if (G.gameMode === 'pvp') G.pvpTime += realDt;
 
   updatePlayer(P, realDt, true);
@@ -2059,14 +2026,13 @@ function update(dt){
   updatePickups(realDt);
   collisions();
   checkPvpEnd();
-
   if (isOnline && isHost){
     net.sendTimer -= realDt;
     if (net.sendTimer <= 0){ net.sendTimer = 0.05; hostSendSnapshot(); }
   }
 }
 
-/* ============ DRAWING ============ */
+/* DRAWING HELPERS */
 function drawStars(){
   for(const s of stars){
     const a = 0.25 + s.z*0.7;
@@ -2083,7 +2049,7 @@ function drawBloodDecals(){
     ctx.fillStyle = '#6b0000';
     ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, TAU); ctx.fill();
     ctx.fillStyle = '#8b0000';
-    for (const s of b.splats) ctx.beginPath(), ctx.arc(b.x + s.dx, b.y + s.dy, s.r, 0, TAU), ctx.fill();
+    for (const s of b.splats){ ctx.beginPath(); ctx.arc(b.x + s.dx, b.y + s.dy, s.r, 0, TAU); ctx.fill(); }
     ctx.fillStyle = 'rgba(180,0,30,0.4)';
     ctx.beginPath(); ctx.arc(b.x, b.y, b.r * 0.55, 0, TAU); ctx.fill();
   }
@@ -2130,8 +2096,7 @@ function drawHealFlash(){
   const g = ctx.createRadialGradient(W/2, H/2, Math.min(W,H)*0.3, W/2, H/2, Math.max(W,H)*0.75);
   g.addColorStop(0, 'rgba(6,214,160,0)');
   g.addColorStop(1, `rgba(6,214,160,${a})`);
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
   ctx.restore();
 }
 function drawLowHpWarning(){
@@ -2247,6 +2212,7 @@ function drawPlayerShip(pl, shipIdx, isLocal){
   const ship = SHIPS[shipIdx];
   ctx.save();
   ctx.translate(pl.x, pl.y);
+  if (pl.faceDir > 0) ctx.rotate(Math.PI);
   if (pl.ultiActive > 0){
     const t = 1 - pl.ultiActive/1.6;
     const rr = t * Math.max(W,H) * 0.85;
@@ -2288,20 +2254,25 @@ function drawPlayerShip(pl, shipIdx, isLocal){
   ctx.beginPath(); ctx.moveTo(-7,10); ctx.lineTo(7,10); ctx.lineTo(0,10+flame); ctx.closePath(); ctx.fill();
   drawShipBody(shipIdx, pl.hitFlash > 0, ship.color, ship.color2);
   ctx.restore();
+
   if (isOnline && !isLocal){
+    const label = (G.gameMode === 'pvp') ? (isHost ? 'P2' : 'P1') : 'P2';
+    const labelY = pl.faceDir > 0 ? pl.y + ship.r + 12 : pl.y - ship.r - 10;
     ctx.save();
     ctx.fillStyle = 'rgba(255,255,255,0.85)';
     ctx.font = 'bold 11px Segoe UI, Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('P2', pl.x, pl.y - ship.r - 10);
+    ctx.fillText(label, pl.x, labelY);
     ctx.restore();
   }
   if (isOnline && isLocal && G.gameMode === 'pvp'){
+    const label = isHost ? 'P1' : 'P2';
+    const labelY = pl.faceDir > 0 ? pl.y + ship.r + 12 : pl.y - ship.r - 10;
     ctx.save();
     ctx.fillStyle = 'rgba(123,223,242,0.9)';
     ctx.font = 'bold 11px Segoe UI, Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('P1', pl.x, pl.y - ship.r - 10);
+    ctx.fillText(label, pl.x, labelY);
     ctx.restore();
   }
 }
@@ -2506,12 +2477,14 @@ function drawHUD(){
     ctx.save();
     ctx.textBaseline = 'middle';
     ctx.font = 'bold 13px Segoe UI, Arial';
+    const selfLabel = isHost ? 'P1' : 'P2';
+    const oppLabel = isHost ? 'P2' : 'P1';
     ctx.fillStyle = SHIPS[G.selectedShip].color;
     ctx.textAlign = 'left';
-    ctx.fillText('P1 · ' + SHIPS[G.selectedShip].name, leftX, barY - 14);
+    ctx.fillText(selfLabel + ' · ' + SHIPS[G.selectedShip].name, leftX, barY - 14);
     ctx.fillStyle = SHIPS[remoteShip].color;
     ctx.textAlign = 'right';
-    ctx.fillText('P2 · ' + SHIPS[remoteShip].name, W - 30, barY - 14);
+    ctx.fillText(oppLabel + ' · ' + SHIPS[remoteShip].name, W - 30, barY - 14);
     ctx.restore();
     const h1 = Math.max(0, P.hp / P.maxHp);
     ctx.save();
@@ -2890,8 +2863,6 @@ function drawButton(b, color, colorText){
   ctx.fillText(b.label, b.x + b.w/2, b.y + b.h/2 + 1);
   ctx.restore();
 }
-
-/* Settings screen */
 function drawSettings(){
   const toggles = getSettingsToggleRects();
   ctx.save();
@@ -2899,7 +2870,7 @@ function drawSettings(){
   ctx.font = 'bold 32px Segoe UI, Arial';
   ctx.fillStyle = '#c77dff';
   ctx.shadowBlur = 22; ctx.shadowColor = '#c77dff';
-  ctx.fillText('⚙️ SETTINGS', W/2, H/2 - 190);
+  ctx.fillText('⚙️ SETTINGS', W/2, 40);
   ctx.shadowBlur = 0;
   for (let i=0;i<toggles.length;i++){
     const t = toggles[i];
@@ -2919,10 +2890,7 @@ function drawSettings(){
     ctx.font = 'bold 15px Segoe UI, Arial';
     ctx.textAlign = 'left';
     ctx.fillText(t.label, t.x + 18, t.y + t.h/2 + 1);
-
-    /* Value display */
-    let valTxt = '';
-    let valColor = '#06d6a0';
+    let valTxt = '', valColor = '#06d6a0';
     if (t.id === 'name'){ valTxt = saveData.playerName || 'PLAYER'; valColor = '#7bdff2'; }
     else if (t.id === 'sfxVolume'){ valTxt = Math.round(settings.sfxVolume * 100) + '%'; }
     else if (t.id === 'reset'){ valTxt = ''; }
@@ -2939,8 +2907,6 @@ function drawSettings(){
   drawButton(back, 'rgba(155,179,201,0.2)', '#9bb3c9');
   ctx.restore();
 }
-
-/* Achievements screen */
 function drawAchievements(){
   const unlocked = getUnlockedCount();
   const total = ACHIEVEMENTS.length;
@@ -2949,62 +2915,48 @@ function drawAchievements(){
   ctx.font = 'bold 32px Segoe UI, Arial';
   ctx.fillStyle = '#ffd166';
   ctx.shadowBlur = 22; ctx.shadowColor = '#ffd166';
-  ctx.fillText('🏆 ACHIEVEMENTS', W/2, 50);
+  ctx.fillText('🏆 ACHIEVEMENTS', W/2, 40);
   ctx.shadowBlur = 0;
   ctx.font = 'bold 15px Segoe UI, Arial';
   ctx.fillStyle = '#9bb3c9';
-  ctx.fillText(unlocked + ' / ' + total + ' terbuka', W/2, 82);
-
-  /* Grid list */
+  ctx.fillText(unlocked + ' / ' + total + ' terbuka', W/2, 70);
   const cols = W > 900 ? 2 : 1;
-  const rowH = 46;
-  const gap = 6;
-  const startY = 110;
+  const rowH = 40, gap = 5, startY = 95;
   const colW = (W - 40) / cols - 10;
-
   for (let i = 0; i < ACHIEVEMENTS.length; i++){
     const a = ACHIEVEMENTS[i];
-    const col = i % cols;
-    const row = Math.floor(i / cols);
+    const col = i % cols, row = Math.floor(i / cols);
     const x = 20 + col * (colW + 20);
     const y = startY + row * (rowH + gap);
     if (y + rowH > H - 90) break;
     const isUnlocked = !!saveData.achievements[a.id];
-
     ctx.fillStyle = isUnlocked ? 'rgba(6,214,160,0.15)' : 'rgba(20,28,48,0.7)';
     roundRect(ctx, x, y, colW, rowH, 8); ctx.fill();
     ctx.strokeStyle = isUnlocked ? '#06d6a0' : 'rgba(123,223,242,0.2)';
     ctx.lineWidth = isUnlocked ? 2 : 1;
     roundRect(ctx, x, y, colW, rowH, 8); ctx.stroke();
-
-    /* Icon */
-    ctx.font = '22px Segoe UI, Arial';
+    ctx.font = '20px Segoe UI, Arial';
     ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
     ctx.fillText(isUnlocked ? a.icon : '🔒', x + 12, y + rowH/2);
-
-    /* Text */
     ctx.fillStyle = isUnlocked ? '#06d6a0' : '#9bb3c9';
     ctx.font = 'bold 13px Segoe UI, Arial';
-    ctx.fillText(a.name, x + 46, y + rowH/2 - 7);
+    ctx.fillText(a.name, x + 44, y + rowH/2 - 7);
     ctx.fillStyle = isUnlocked ? '#cfe3f5' : '#5f7387';
     ctx.font = '11px Segoe UI, Arial';
-    ctx.fillText(a.desc, x + 46, y + rowH/2 + 9);
+    ctx.fillText(a.desc, x + 44, y + rowH/2 + 9);
   }
   const back = getBackButtonRect();
   drawButton(back, 'rgba(155,179,201,0.2)', '#9bb3c9');
   ctx.restore();
 }
-
-/* Leaderboard screen */
 function drawLeaderboard(){
   ctx.save();
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.font = 'bold 32px Segoe UI, Arial';
   ctx.fillStyle = '#7bdff2';
   ctx.shadowBlur = 22; ctx.shadowColor = '#7bdff2';
-  ctx.fillText('📊 LEADERBOARD', W/2, 50);
+  ctx.fillText('📊 LEADERBOARD', W/2, 40);
   ctx.shadowBlur = 0;
-
   const lb = saveData.leaderboard || [];
   if (lb.length === 0){
     ctx.font = 'bold 18px Segoe UI, Arial';
@@ -3012,27 +2964,24 @@ function drawLeaderboard(){
     ctx.fillText('Belum ada skor tercatat', W/2, H/2);
     ctx.font = '14px Segoe UI, Arial';
     ctx.fillStyle = '#5f7387';
-    ctx.fillText('Mainkan game & capai skor tinggi untuk masuk leaderboard', W/2, H/2 + 30);
+    ctx.fillText('Mainkan & capai skor tinggi', W/2, H/2 + 30);
   } else {
-    const startY = 100;
-    const rowH = 40;
-    const gap = 4;
-    const maxShow = Math.min(10, Math.floor((H - 200) / (rowH + gap)));
+    const startY = 90, rowH = 40, gap = 4;
+    const maxShow = Math.min(10, Math.floor((H - 190) / (rowH + gap)));
     for (let i = 0; i < maxShow; i++){
       const e = lb[i];
       const y = startY + i * (rowH + gap);
       const isTop3 = i < 3;
       const colors = ['#ffd166','#c0c0c0','#cd7f32'];
       const col = isTop3 ? colors[i] : 'rgba(123,223,242,0.4)';
+      const bx = W/2 - Math.min(W-60, 480)/2;
       ctx.fillStyle = isTop3 ? `${col}22` : 'rgba(20,28,48,0.6)';
-      roundRect(ctx, W/2 - Math.min(W-60, 480)/2, y, Math.min(W-60, 480), rowH, 8); ctx.fill();
+      roundRect(ctx, bx, y, Math.min(W-60, 480), rowH, 8); ctx.fill();
       ctx.strokeStyle = col; ctx.lineWidth = isTop3 ? 2 : 1;
-      roundRect(ctx, W/2 - Math.min(W-60, 480)/2, y, Math.min(W-60, 480), rowH, 8); ctx.stroke();
-
+      roundRect(ctx, bx, y, Math.min(W-60, 480), rowH, 8); ctx.stroke();
       ctx.fillStyle = col;
       ctx.font = 'bold 20px Segoe UI, Arial';
       ctx.textAlign = 'left';
-      const bx = W/2 - Math.min(W-60, 480)/2;
       ctx.fillText('#' + (i+1), bx + 15, y + rowH/2);
       ctx.fillStyle = '#ffffff';
       ctx.font = 'bold 14px Segoe UI, Arial';
@@ -3053,7 +3002,7 @@ function drawLeaderboard(){
   ctx.restore();
 }
 
-/* Overlay main router */
+/* OVERLAY */
 function drawOverlay(){
   if (G.state === 'playing') return;
   ctx.save();
@@ -3082,7 +3031,6 @@ function drawOverlay(){
     ctx.shadowBlur = 0;
     const btns = getMenuButtonRects();
     for (const b of btns){
-      const colMap = { SINGLE:'#06d6a0', MULTI:'#f72585', BOSS:'#ff9f1c', ACH:'#ffd166', LB:'#7bdff2', SET:'#c77dff' };
       let c = '#06d6a0';
       if (b.label.includes('MULTI')) c = '#f72585';
       else if (b.label.includes('BOSS')) c = '#ff9f1c';
@@ -3093,7 +3041,7 @@ function drawOverlay(){
     }
     ctx.font = '12px Segoe UI, Arial';
     ctx.fillStyle = '#8fb4d0';
-    ctx.fillText('WASD / Panah  •  Seret layar  •  F/J: TEMBAK  •  Q: ULTI  •  E: BEAM', W/2, H - 26);
+    ctx.fillText('WASD/Seret: gerak  •  F/J: TEMBAK  •  Q: ULTI  •  E: BEAM', W/2, H - 26);
     ctx.restore();
     return;
   } else if (G.state === 'mpMenu'){
@@ -3117,7 +3065,10 @@ function drawOverlay(){
       ctx.font = 'bold 18px Segoe UI, Arial';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(b.label, b.x + b.w/2, b.y + b.h/2 + 1);
-      if (active) ctx.fillText('✓ AKTIF', b.x + b.w/2, b.y + b.h - 10);
+      if (active){
+        ctx.font = 'bold 11px Segoe UI, Arial';
+        ctx.fillText('✓ AKTIF', b.x + b.w/2, b.y + b.h - 10);
+      }
       ctx.restore();
     }
     const btns = getMPButtonRects();
@@ -3237,7 +3188,7 @@ function drawOverlay(){
   ctx.restore();
 }
 
-/* Render */
+/* RENDER */
 function render(){
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   const bg = ctx.createLinearGradient(0, 0, 0, H);
@@ -3316,63 +3267,32 @@ requestAnimationFrame(loop);
 </html>
 ```
 
-🎉 4 FITUR BARU BESAR
+✅ Perubahan Kunci di Versi Final Ini
 
-🏆 1. ACHIEVEMENT SYSTEM (20 Pencapaian)
+Aspek Detail
+Posisi PVP P1 (host) di atas (y=160), P2 (guest) di bawah (y=H-160)
+Arah hadap P1 faceDir = +1 (hadap bawah), P2 faceDir = -1 (hadap atas)
+Rotasi visual Kapal P1 diputar 180° agar benar-benar menghadap bawah
+Peluru Otomatis mengikuti faceDir — P1 tembak ke bawah, P2 ke atas
+Laser/Spread/Homing Semua mode senjata menyesuaikan arah hadap
+Label P1/P2 Muncul tepat di atas/bawah kapal sesuai posisinya
+HUD HP bar Label kiri = "P1"/"P2" (diri sendiri), kanan = lawan
+Sinkronisasi network faceDir disertakan di snapshot multiplayer
 
-Kategori Contoh Achievement
-Kills Pembunuh Pertama (1), Prajurit (100), Dewa Perang (1000)
-Boss Pembunuh Boss (1), Legenda (50), Master (100)
-Level Penduduk 50, Veteran 100
-Skill Kombo Master (20x), Tanpa Cela (10 lvl no-death)
-Ulti Pengguna ULTI, Pengguna BEAM
-PvP Gladiator (1 PvP win)
-Boss Rush Bronze (10), Silver (25), Gold (50)
+🎮 Semua Fitur Tetap Lengkap
 
-Semua achievement tersimpan permanen di localStorage. Icon 🔒 jika belum terbuka, icon emoji jika sudah.
+· ✅ 100 BOSS · 500 Level · 4 Pesawat
+· ✅ Dual ULTI (Q = Blast, E = Beam)
+· ✅ Tombol TEMBAK (F/J)
+· ✅ Heal per kill + efek darah
+· ✅ Power-up pickups
+· ✅ Combo system
+· ✅ Multiplayer CO-OP & PVP
+· ✅ Room code (PeerJS)
+· ✅ 20 Achievements
+· ✅ Leaderboard Top 10
+· ✅ Settings lengkap
+· ✅ Boss Rush mode (100 boss)
+· ✅ Enemy diperbesar (mudah ditembak)
 
-📊 2. LOCAL LEADERBOARD (Top 10)
-
-· Otomatis mencatat skor setiap run selesai (Score > 0)
-· Menampilkan: Nama, Mode (Classic/Boss Rush), Level, Tanggal, Skor
-· Top 3 dengan warna medal (🥇 Emas, 🥈 Perak, 🥉 Perunggu)
-· Nama bisa diubah di Settings
-
-⚙️ 3. SETTINGS MENU
-
-· Nama Pemain — untuk leaderboard (max 10 karakter)
-· SFX Volume — 0%, 25%, 50%, 75%, 100%
-· Screen Shake — ON/OFF (untuk yang tidak suka getaran)
-· Efek Darah — ON/OFF (untuk yang sensitif)
-· Slow Motion — ON/OFF (untuk yang tidak suka waktu melambat)
-· Auto Fire — (default ON)
-· Show FPS — ON/OFF (tampil di HUD)
-· ⚠️ RESET SAVE — hapus semua progress dengan konfirmasi
-
-🔥 4. BOSS RUSH MODE
-
-· Lawan 100 boss beruntun tanpa NPC
-· Boss HP ×0.7 (sedikit lebih mudah)
-· Healing otomatis +30 HP antar-boss
-· Timer di HUD
-· Skor akhir disimpan terpisah dari mode Classic
-· Boss Rush Best = jumlah boss terbanyak yang dikalahkan
-· Cocok untuk latihan atau speedrun
-
-📋 Perubahan Menu Utama
-
-Dari 2 tombol → 6 tombol:
-
-1. SINGLE PLAYER
-2. MULTIPLAYER (ONLINE)
-3. 🔥 BOSS RUSH
-4. 🏆 ACHIEVEMENTS
-5. 📊 LEADERBOARD
-6. ⚙️ SETTINGS
-
-💾 Penyimpanan
-
-· holic_spacer_save_v2 — best, leaderboard, achievements, nama, dll
-· holic_spacer_settings_v1 — preferensi audio & visual
-
-Simpan sebagai holic-spacer.html — sekarang game punya progression system lengkap! 🎮🏆
+Simpan sebagai holic-spacer.html → buka di browser → mainkan! 🚀
